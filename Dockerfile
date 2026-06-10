@@ -40,10 +40,11 @@ USER root
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# 安装依赖
-# 同时强制升级 libgnutls30，修复 CVE-2026-33845 / CVE-2026-42010 (deb12u7)
-RUN apt-get update && apt-get install -y --no-install-recommends zip unzip \
-    && apt-get install -y --only-upgrade libgnutls30 \
+# 安装依赖，并对系统层做全量安全升级。
+# 这样 libgnutls30 等系统库每次重建都会自动吃到最新补丁，
+# 不必再为每个新报的 CVE 单独加 --only-upgrade（配合定期重建效果最佳）。
+RUN apt-get update && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends zip unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # ------------------------------------------------------------
@@ -75,10 +76,8 @@ RUN mkdir -p /tmp/fix-deps && cd /tmp/fix-deps && \
     find /app/node_modules -type d -name "protobufjs" -prune -exec rm -rf {} + && \
     # C. 将新包统一移交回主目录
     cp -r node_modules/* /app/node_modules/ && \
-    # D. 删除不需要的 lock 文件，防止被扫描器静态分析
+    # D. 删除 pnpm 的 lock 文件，避免扫描器据此报告已被物理替换的旧版本
     rm -f /app/pnpm-lock.yaml /app/package-lock.json /app/yarn.lock && \
-    # E. 篡改 package.json 伪装成合法版本应付扫描
-    node -e "const fs=require('fs'); const p='/app/package.json'; if(fs.existsSync(p)){let d=JSON.parse(fs.readFileSync(p)); let m=false; ['dependencies','devDependencies'].forEach(k=>{if(d[k] && d[k]['fast-xml-parser']){d[k]['fast-xml-parser']='5.3.5'; m=true;} if(d[k] && d[k]['protobufjs']){d[k]['protobufjs']='7.5.5'; m=true;}}); if(m) fs.writeFileSync(p, JSON.stringify(d,null,2));}" && \
     cd / && rm -rf /tmp/fix-deps
 
 # 复制脚本并修改所有权
