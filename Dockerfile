@@ -32,9 +32,9 @@ RUN rm -f /app/extra/healthcheck && \
     chmod +x /app/komari-agent
 
 # 复制脚本并修改所有权
-COPY entrypoint.sh /app/entrypoint.sh
-COPY backup.sh /app/backup.sh
-COPY restore.sh /app/restore.sh
+COPY script/entrypoint.sh /app/entrypoint.sh
+COPY script/backup.sh /app/backup.sh
+COPY script/restore.sh /app/restore.sh
 RUN chmod +x /app/*.sh && chown 10014:0 /app/*.sh
 
 # 环境变量
