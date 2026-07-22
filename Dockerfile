@@ -31,22 +31,6 @@ RUN rm -f /app/extra/healthcheck && \
     chmod -R 775 /app && \
     chmod +x /app/komari-agent
 
-RUN mkdir -p /tmp/fix-deps && cd /tmp/fix-deps && \
-    npm init -y && \
-    # 一次性下载所有需要的包（包括安全版本）
-    # protobufjs@7.5.5 修复 CVE-2026-41242
-    npm install pg drizzle-orm @napi-rs/canvas fast-xml-parser@5.3.5 protobufjs@7.5.5 && \
-    # A. 拔掉原有的软链接钉子
-    rm -rf /app/node_modules/pg /app/node_modules/drizzle-orm /app/node_modules/@napi-rs && \
-    # B. 物理抹除深埋在 pnpm 虚拟目录里的旧版 fast-xml-parser / protobufjs
-    find /app/node_modules -type d -name "fast-xml-parser" -prune -exec rm -rf {} + && \
-    find /app/node_modules -type d -name "protobufjs" -prune -exec rm -rf {} + && \
-    # C. 将新包统一移交回主目录
-    cp -r node_modules/* /app/node_modules/ && \
-    # D. 删除 pnpm 的 lock 文件，避免扫描器据此报告已被物理替换的旧版本
-    rm -f /app/pnpm-lock.yaml /app/package-lock.json /app/yarn.lock && \
-    cd / && rm -rf /tmp/fix-deps
-
 # 复制脚本并修改所有权
 COPY entrypoint.sh /app/entrypoint.sh
 COPY backup.sh /app/backup.sh
