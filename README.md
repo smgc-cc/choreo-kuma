@@ -2,12 +2,12 @@
 
 # Version
 
-2.5.6
+2.5.7
 
 # Releases
 
 ### 🐞 Bug Fixes
-- #7886 fix: use UptimeCalculator for avg-response badge endpoint 
+- #7989 fix: retries ignored by TCP Port monitor with SSL/STARTTLS
 
 ### ⬆️ Security Fixes
-- #7858 chore: Update dependencies 
+- [Docker] Images bumped to Node.js 22.23.4, now it rejects the leaked eMudhra 384 bit CA: `00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:04`. (Thanks @veteranbv)
