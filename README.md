@@ -2,20 +2,21 @@
 
 # Version
 
-2.5.8
+2.5.9
 
 # Releases
 
+
 ### 🐞 Bug Fixes
-- #8049 fix: Docker verification check sometimes not catching invalid responses (2.5.X backport) (Thanks @Abestanis)
-- #8038 fix: add `next-slim-rootless` docker tag
-- #8028 fix: drop TLS support from the TCP Port monitor (It never worked as expected and very buggy, all existing monitors will become normal TCP monitors)
+
+- #8082 fix: runtime timeout fallback used milliseconds for a seconds field 
+- #8081 fix: reset push monitor retries from the last stored heartbeat 
+- #8079 fix: remove duplicated refresh timer on status page 
+- #8064 fix: display recurring maintenance in its configured timezone (Thanks @kuxiaowo)
 
 ### ⬆️ Security Fixes
 
-- GHSA-v2p3-6f5h-6hhf [Admin Only] RCE (Thanks @Sami111-Afk) (Open a help issue to ask to reveal it after 7 days, in case i forget to)
-
-### Others
-- #8037 revert: hide/show password toggle in login page (#7672) (Because the height is inconsistent)
-
+- GHSA-86ch-2247-gr56 fix: RSS cache poisoning (Thanks @the-arma-of-owl)
+- #8080 chore: drop outdated apicache, migrate to http-cache-semantics (related to the above issue)
+- #8050 chore: Update dependencies 
 
