@@ -2,21 +2,16 @@
 
 # Version
 
-2.5.9
+2.5.10
 
 # Releases
 
-
 ### 🐞 Bug Fixes
 
-- #8082 fix: runtime timeout fallback used milliseconds for a seconds field 
-- #8081 fix: reset push monitor retries from the last stored heartbeat 
-- #8079 fix: remove duplicated refresh timer on status page 
-- #8064 fix: display recurring maintenance in its configured timezone (Thanks @kuxiaowo)
+- #8138 fix: reset password for embedded MariaDB 
 
 ### ⬆️ Security Fixes
 
-- GHSA-86ch-2247-gr56 fix: RSS cache poisoning (Thanks @the-arma-of-owl)
-- #8080 chore: drop outdated apicache, migrate to http-cache-semantics (related to the above issue)
-- #8050 chore: Update dependencies 
+- [Docker] Update Node.js to 22.23.5 - Upstream high severity issues could possibly affect Uptime Kuma (Read more: https://nodejs.org/en/blog/vulnerability/november-2026-security-releases)
 
+PS: For non-Docker, you should update your Node.js to the patched version too.
